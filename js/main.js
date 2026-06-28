@@ -71,15 +71,10 @@ document.querySelectorAll('.animate-on-scroll').forEach(el => {
 });
 
 // ===== PRODUCTS - GOOGLE SHEETS INTEGRATION =====
-// INSTRUCCIONES:
-// 1. Crea una Google Sheet con columnas: Nombre | Descripcion | Precio | Categoria | Imagen | Badge
-// 2. Ve a Archivo → Compartir → Publicar en la web → Publicar como página web
-// 3. Copia el ID de la hoja (está en la URL entre /d/ y /edit)
-// 4. Pega el ID abajo reemplazando 'TU_SHEET_ID_AQUI'
+// La hoja debe estar publicada en la web (Archivo → Compartir → Publicar en la web)
+// Columnas: Nombre | Descripcion | Precio | Categoria | Imagen | Badge
 
-const SHEET_ID = '1IYwyvhiJjXRtoKJgMN0SzrsmeqHJTG_2ljAka7AK89w';
-const SHEET_NAME = 'Productos'; // Nombre de la pestaña
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQm15IMiupaKgGrpGUP9bUihPHCe3S5QMF2kCCvKsJUkelREmIW47lE0xjfFR1JlLZtjXkpwDFaPXzx/pub?output=csv';
 
 const productsGrid = document.getElementById('productsGrid');
 const productsFilter = document.getElementById('productsFilter');
@@ -94,25 +89,58 @@ const categoryIcons = {
     'outdoor': 'fa-hiking'
 };
 
+function parseCSV(text) {
+    const lines = text.split('\n').filter(line => line.trim());
+    if (lines.length < 2) return [];
+
+    // Parsear header (primera fila)
+    const headers = parseCSVLine(lines[0]);
+
+    // Parsear filas de datos
+    return lines.slice(1).map(line => {
+        const cols = parseCSVLine(line);
+        return {
+            nombre: (cols[0] || '').trim(),
+            descripcion: (cols[1] || '').trim(),
+            precio: (cols[2] || '').trim(),
+            categoria: (cols[3] || '').toLowerCase().trim(),
+            imagen: (cols[4] || '').trim(),
+            badge: (cols[5] || '').trim()
+        };
+    }).filter(p => p.nombre);
+}
+
+function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+            if (inQuotes && line[i + 1] === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    result.push(current);
+    return result;
+}
+
 async function loadProducts() {
     try {
-        const response = await fetch(SHEET_URL);
+        const response = await fetch(SHEET_CSV_URL);
         const text = await response.text();
 
-        // Google devuelve JSONP, extraer el JSON puro
-        const json = JSON.parse(text.substring(47).slice(0, -2));
-        const rows = json.table.rows;
-        const cols = json.table.cols;
-
-        // Parsear productos
-        const products = rows.map(row => ({
-            nombre: row.c[0] ? row.c[0].v : '',
-            descripcion: row.c[1] ? row.c[1].v : '',
-            precio: row.c[2] ? row.c[2].v : '',
-            categoria: row.c[3] ? (row.c[3].v || '').toLowerCase().trim() : '',
-            imagen: row.c[4] ? row.c[4].v : '',
-            badge: row.c[5] ? row.c[5].v : ''
-        })).filter(p => p.nombre); // Filtrar filas vacías
+        const products = parseCSV(text);
 
         if (products.length === 0) {
             productsGrid.innerHTML = '<p class="products-empty">No hay productos disponibles.</p>';
