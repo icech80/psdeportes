@@ -191,6 +191,17 @@ function renderFilters(categories) {
     });
 }
 
+function formatPrice(value) {
+    // Si ya tiene $ o formato, devolverlo tal cual
+    if (!value) return '';
+    const str = value.toString().trim();
+    if (str.startsWith('$')) return str;
+    // Remover caracteres no numéricos excepto punto/coma
+    const num = parseInt(str.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(num)) return str;
+    return '$' + num.toLocaleString('es-CL');
+}
+
 function renderProducts(products) {
     let html = '';
     products.forEach(product => {
@@ -199,6 +210,7 @@ function renderProducts(products) {
         const imageHTML = product.imagen
             ? `<img src="${product.imagen}" alt="${product.nombre}" loading="lazy">`
             : `<i class="fas ${icon}"></i>`;
+        const precio = formatPrice(product.precio);
 
         html += `
             <div class="product-card animate-on-scroll" data-category="${product.categoria}">
@@ -209,7 +221,7 @@ function renderProducts(products) {
                 <div class="product-info">
                     <h3>${product.nombre}</h3>
                     <p>${product.descripcion}</p>
-                    <span class="product-price">${product.precio}</span>
+                    <span class="product-price">${precio}</span>
                 </div>
             </div>`;
     });
