@@ -77,7 +77,7 @@ document.querySelectorAll('.animate-on-scroll').forEach(el => {
 // 3. Copia el ID de la hoja (está en la URL entre /d/ y /edit)
 // 4. Pega el ID abajo reemplazando 'TU_SHEET_ID_AQUI'
 
-const SHEET_ID = 'TU_SHEET_ID_AQUI';
+const SHEET_ID = '1IYwyvhiJjXRtoKJgMN0SzrsmeqHJTG_2ljAka7AK89w';
 const SHEET_NAME = 'Productos'; // Nombre de la pestaña
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
 
