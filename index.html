@@ -149,96 +149,13 @@
     <section class="section section-products" id="productos">
         <div class="container">
             <h2 class="section-title animate-on-scroll">Productos Destacados</h2>
-            <div class="products-filter animate-on-scroll">
+            <div class="products-filter animate-on-scroll" id="productsFilter">
                 <button class="filter-btn active" data-filter="all">Todos</button>
-                <button class="filter-btn" data-filter="ropa">Ropa</button>
-                <button class="filter-btn" data-filter="calzado">Calzado</button>
-                <button class="filter-btn" data-filter="implementos">Implementos</button>
-                <button class="filter-btn" data-filter="accesorios">Accesorios</button>
             </div>
             <div class="products-grid" id="productsGrid">
-                <div class="product-card animate-on-scroll" data-category="ropa">
-                    <div class="product-image">
-                        <i class="fas fa-tshirt"></i>
-                        <span class="product-badge">Nuevo</span>
-                    </div>
-                    <div class="product-info">
-                        <h3>Camiseta Deportiva</h3>
-                        <p>Tela dry-fit, todas las tallas</p>
-                        <span class="product-price">$12.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="calzado">
-                    <div class="product-image">
-                        <i class="fas fa-shoe-prints"></i>
-                        <span class="product-badge">Popular</span>
-                    </div>
-                    <div class="product-info">
-                        <h3>Zapatillas Running</h3>
-                        <p>Amortiguación premium</p>
-                        <span class="product-price">$45.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="implementos">
-                    <div class="product-image">
-                        <i class="fas fa-futbol"></i>
-                        <span class="product-badge">Oferta</span>
-                    </div>
-                    <div class="product-info">
-                        <h3>Balón de Fútbol Pro</h3>
-                        <p>Tamaño oficial, cosido a mano</p>
-                        <span class="product-price">$24.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="ropa">
-                    <div class="product-image">
-                        <i class="fas fa-vest"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Conjunto Deportivo</h3>
-                        <p>Buzo + pantalón, tallas S a XXL</p>
-                        <span class="product-price">$32.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="implementos">
-                    <div class="product-image">
-                        <i class="fas fa-volleyball-ball"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Balón Vóleibol</h3>
-                        <p>Mikasa oficial de competencia</p>
-                        <span class="product-price">$29.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="accesorios">
-                    <div class="product-image">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Kit Fitness</h3>
-                        <p>Bandas elásticas + colchoneta</p>
-                        <span class="product-price">$18.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="calzado">
-                    <div class="product-image">
-                        <i class="fas fa-hiking"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Zapatillas Trekking</h3>
-                        <p>Impermeables, suela Vibram</p>
-                        <span class="product-price">$59.990</span>
-                    </div>
-                </div>
-                <div class="product-card animate-on-scroll" data-category="accesorios">
-                    <div class="product-image">
-                        <i class="fas fa-stopwatch"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Reloj Deportivo</h3>
-                        <p>Monitor cardíaco, GPS</p>
-                        <span class="product-price">$39.990</span>
-                    </div>
+                <div class="products-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Cargando productos...</p>
                 </div>
             </div>
         </div>
