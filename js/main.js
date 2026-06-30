@@ -274,7 +274,7 @@ function renderProducts(products) {
 // ===== PRODUCT MODAL =====
 const productModal = document.getElementById('productModal');
 const modalClose = document.getElementById('modalClose');
-const modalImage = document.getElementById('modalImage');
+const modalImageContainer = document.getElementById('modalImageContainer');
 const modalName = document.getElementById('modalName');
 const modalDesc = document.getElementById('modalDesc');
 const modalPrice = document.getElementById('modalPrice');
@@ -287,9 +287,9 @@ function openProductModal(product) {
     const icon = categoryIcons[product.categoria] || 'fa-box';
 
     if (imgUrl) {
-        modalImage.innerHTML = `<img src="${imgUrl}" alt="${product.nombre}">`;
+        modalImageContainer.innerHTML = `<img src="${imgUrl}" alt="${product.nombre}">`;
     } else {
-        modalImage.innerHTML = `<i class="fas ${icon}"></i>`;
+        modalImageContainer.innerHTML = `<i class="fas ${icon}"></i>`;
     }
 
     modalName.textContent = product.nombre;
