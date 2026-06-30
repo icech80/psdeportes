@@ -232,7 +232,7 @@ function formatPrice(value) {
 
 function renderProducts(products) {
     let html = '';
-    products.forEach(product => {
+    products.forEach((product, index) => {
         const icon = categoryIcons[product.categoria] || 'fa-box';
         const badgeHTML = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
         const imgUrl = convertDriveUrl(product.imagen);
@@ -242,7 +242,7 @@ function renderProducts(products) {
         const precio = formatPrice(product.precio);
 
         html += `
-            <div class="product-card animate-on-scroll" data-category="${product.categoria}">
+            <div class="product-card animate-on-scroll" data-category="${product.categoria}" data-index="${index}">
                 <div class="product-image">
                     ${imageHTML}
                     ${badgeHTML}
@@ -261,7 +261,66 @@ function renderProducts(products) {
     productsGrid.querySelectorAll('.animate-on-scroll').forEach(el => {
         observer.observe(el);
     });
+
+    // Bind click para abrir modal
+    productsGrid.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const idx = parseInt(card.getAttribute('data-index'));
+            openProductModal(products[idx]);
+        });
+    });
 }
+
+// ===== PRODUCT MODAL =====
+const productModal = document.getElementById('productModal');
+const modalClose = document.getElementById('modalClose');
+const modalImage = document.getElementById('modalImage');
+const modalName = document.getElementById('modalName');
+const modalDesc = document.getElementById('modalDesc');
+const modalPrice = document.getElementById('modalPrice');
+const modalCategory = document.getElementById('modalCategory');
+const modalWhatsApp = document.getElementById('modalWhatsApp');
+
+function openProductModal(product) {
+    const imgUrl = convertDriveUrl(product.imagen);
+    const precio = formatPrice(product.precio);
+    const icon = categoryIcons[product.categoria] || 'fa-box';
+
+    if (imgUrl) {
+        modalImage.innerHTML = `<img src="${imgUrl}" alt="${product.nombre}">`;
+    } else {
+        modalImage.innerHTML = `<i class="fas ${icon}"></i>`;
+    }
+
+    modalName.textContent = product.nombre;
+    modalDesc.textContent = product.descripcion;
+    modalPrice.textContent = precio;
+    modalCategory.textContent = product.categoria;
+
+    // WhatsApp link con nombre del producto
+    const msg = encodeURIComponent(`Hola, me interesa el producto: ${product.nombre} (${precio})`);
+    modalWhatsApp.href = `https://wa.me/56931423601?text=${msg}`;
+
+    productModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal() {
+    productModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+modalClose.addEventListener('click', closeProductModal);
+
+productModal.addEventListener('click', (e) => {
+    if (e.target === productModal) closeProductModal();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && productModal.classList.contains('active')) {
+        closeProductModal();
+    }
+});
 
 // Cargar productos al iniciar
 loadProducts();
