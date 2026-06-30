@@ -191,6 +191,34 @@ function renderFilters(categories) {
     });
 }
 
+function convertDriveUrl(url) {
+    if (!url) return '';
+    // Extraer el ID del archivo de cualquier formato de link de Google Drive
+    let fileId = '';
+    const patterns = [
+        /\/file\/d\/([a-zA-Z0-9_-]+)/,        // /file/d/ID/view
+        /[?&]id=([a-zA-Z0-9_-]+)/,             // ?id=ID o &id=ID
+        /\/d\/([a-zA-Z0-9_-]+)/,               // /d/ID
+        /^([a-zA-Z0-9_-]{20,})$/                // Solo el ID directo
+    ];
+
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match) {
+            fileId = match[1];
+            break;
+        }
+    }
+
+    if (fileId) {
+        // Usar lh3.googleusercontent.com que no da 403
+        return `https://lh3.googleusercontent.com/d/${fileId}`;
+    }
+
+    // Si no es link de Drive, devolver tal cual (imgbb, imgur, etc.)
+    return url;
+}
+
 function formatPrice(value) {
     // Si ya tiene $ o formato, devolverlo tal cual
     if (!value) return '';
@@ -207,8 +235,9 @@ function renderProducts(products) {
     products.forEach(product => {
         const icon = categoryIcons[product.categoria] || 'fa-box';
         const badgeHTML = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
-        const imageHTML = product.imagen
-            ? `<img src="${product.imagen}" alt="${product.nombre}" loading="lazy">`
+        const imgUrl = convertDriveUrl(product.imagen);
+        const imageHTML = imgUrl
+            ? `<img src="${imgUrl}" alt="${product.nombre}" loading="lazy">`
             : `<i class="fas ${icon}"></i>`;
         const precio = formatPrice(product.precio);
 
