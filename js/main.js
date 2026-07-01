@@ -382,12 +382,11 @@ backToTop.addEventListener('click', () => {
 const contactForm = document.getElementById('contactForm');
 
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const nombre = document.getElementById('nombre').value.trim();
         const email = document.getElementById('email').value.trim();
-        const asunto = document.getElementById('asunto').value.trim();
         const mensaje = document.getElementById('mensaje').value.trim();
 
         if (!nombre || !email || !mensaje) {
@@ -395,17 +394,30 @@ if (contactForm) {
             return;
         }
 
-        // Simular envío
         const btn = contactForm.querySelector('button[type="submit"]');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
         btn.disabled = true;
 
-        setTimeout(() => {
-            showNotification('¡Mensaje enviado con éxito! Te responderemos pronto.', 'success');
-            contactForm.reset();
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Mensaje';
-            btn.disabled = false;
-        }, 1500);
+        try {
+            const formData = new FormData(contactForm);
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                showNotification('¡Mensaje enviado con éxito! Te responderemos pronto.', 'success');
+                contactForm.reset();
+            } else {
+                showNotification('Error al enviar. Intenta de nuevo.', 'error');
+            }
+        } catch (error) {
+            showNotification('Error de conexión. Intenta de nuevo.', 'error');
+        }
+
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Mensaje';
+        btn.disabled = false;
     });
 }
 

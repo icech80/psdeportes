@@ -296,7 +296,11 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact-form animate-on-scroll" id="contactForm">
+                <form class="contact-form animate-on-scroll" id="contactForm" action="https://formsubmit.co/profpedro7@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="Nuevo mensaje desde PSDeportes.cl">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="">
+                    <input type="text" name="_honey" style="display:none">
                     <div class="form-group">
                         <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
                     </div>
@@ -304,7 +308,7 @@
                         <input type="email" id="email" name="email" placeholder="Tu email" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="asunto" name="asunto" placeholder="Asunto">
+                        <input type="text" id="asunto" name="_subject" placeholder="Asunto">
                     </div>
                     <div class="form-group">
                         <textarea id="mensaje" name="mensaje" rows="5" placeholder="Tu mensaje" required></textarea>
